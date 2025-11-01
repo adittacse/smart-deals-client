@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute.jsx";
 import MyProducts from "../components/MyProducts/MyProducts.jsx";
 import MyBids from "../components/MyBids/MyBids.jsx";
 import CreateProduct from "../components/CreateProduct/CreateProduct.jsx";
+import ProductDetails from "../components/ProductDetails/ProductDetails.jsx";
 
 const Router = createBrowserRouter([
     {
@@ -29,6 +30,11 @@ const Router = createBrowserRouter([
             {
                 path: "login",
                 element: <Login />
+            },
+            {
+                path: "product-details/:id",
+                loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`),
+                element: <ProductDetails />
             },
             {
                 path: "my-products",

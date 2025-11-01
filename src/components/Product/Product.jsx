@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from "react-router";
 
 const Product = ({ product }) => {
@@ -13,7 +12,7 @@ const Product = ({ product }) => {
                 <h2 className="card-title">{title}</h2>
                 <p className="primary-text">${price_min}-{price_max}</p>
                 <div className="card-actions justify-end">
-                    <Link to="/login" className="btn btn-secondary w-full mr-2">
+                    <Link to={`/product-details/${_id}`} className="btn btn-secondary w-full mr-2">
                         <span className="primary">View Details</span>
                     </Link>
                 </div>
