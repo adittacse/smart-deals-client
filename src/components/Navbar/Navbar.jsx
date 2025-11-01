@@ -39,7 +39,7 @@ const Navbar = () => {
                         {links}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">Smart<span className="primary">Deals</span></a>
+                <Link to="/" className="btn btn-ghost text-xl">Smart<span className="primary-text">Deals</span></Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal justify-between px-1">
@@ -49,8 +49,11 @@ const Navbar = () => {
             <div className="navbar-end">
                 {
                     !user ? <>
-                        <Link to="/login" className="btn gradient-border primary mr-2">Login</Link>
-                        <Link to="/register" className="btn text-white bg-[linear-gradient(90deg,#632EE3_0%,#9F62F2_100%)]">Register</Link>
+                        {/*<Link to="/login" className="btn btn-secondary primary mr-2">Login</Link>*/}
+                        <Link to="/login" className="btn btn-secondary mr-2">
+                            <span className="primary">Login</span>
+                        </Link>
+                        <Link to="/register" className="btn btn-primary">Register</Link>
                     </> : <>
                         <div className="tooltip tooltip-bottom" data-tip={user?.displayName}>
                             <img className="rounded-full border w-10 h-10 mr-3" src={user?.photoURL || user?.providerData?.[0]?.photoURL} alt="User image"/>

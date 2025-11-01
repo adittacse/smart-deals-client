@@ -41,9 +41,29 @@ const Register = () => {
 
         googleSignIn()
             .then((result) => {
+                const newUser = {
+                    displayName: result.user.displayName,
+                    email: result.user.email,
+                    photoURL: result.user.photoURL
+                };
                 result.user.reload();
-                setUser(result.user);
-                setSuccess("Logged in successfully!");
+                // create user in the database
+                fetch("http://localhost:3000/users",{
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(newUser)
+                })
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (data?.message) {
+                            setError(data.message);
+                        } else {
+                            setUser(result.user);
+                            setSuccess("Logged in successfully!");
+                        }
+                    })
             })
             .catch((error) => {
                 setError(error.message);
@@ -57,7 +77,7 @@ const Register = () => {
                     <div className="text-center text-secondary">
                         <h1 className="text-[32px] font-semibold">Register now!</h1>
                         <p className="mt-2 mb-4">
-                            Already have an account? <Link className="primary" to="/login">Login Now</Link>
+                            Already have an account? <Link className="primary-text" to="/login">Login Now</Link>
                         </p>
                     </div>
                     <form onSubmit={handleRegister}>
@@ -74,7 +94,7 @@ const Register = () => {
                             {/*password*/}
                             <label className="label text-secondary">Password</label>
                             <input name="password" type="password" className="input" placeholder="******" />
-                            <button className="btn bg-[linear-gradient(90deg,#632EE3_0%,#9F62F2_100%)] text-white font-semibold mt-4">Register</button>
+                            <button className="btn btn-primary font-semibold mt-4">Register</button>
                         </fieldset>
                     </form>
                     {

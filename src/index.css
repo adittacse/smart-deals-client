@@ -5,10 +5,19 @@
 @plugin "daisyui/theme" {
     name: light;
     default: true;
+    --color-primary: #632EE3;
     --color-secondary: #001931;
 }
 
-.primary {
+.btn-primary {
+    @apply bg-gradient-to-r from-[#632EE3] to-[#9F62F2] border-none text-white;
+}
+
+.btn-primary:hover {
+    @apply opacity-90;
+}
+
+.primary-text {
     font-weight: 600;
     background: linear-gradient(90deg, #632ee3 0%, #9f62f2 100%);
     -webkit-background-clip: text;
@@ -17,8 +26,16 @@
     -webkit-text-fill-color: transparent;
 }
 
-.gradient-border {
+.btn-secondary {
     border: 1px solid transparent;
-    border-image: linear-gradient(90deg, #632EE3, #9F62F2) 1;
-    /*border-radius: 30px !important;*/
+    padding: 10px 20px;
+    border-radius: 4px !important;
+    background:
+            linear-gradient(#fff, #fff) padding-box,                /* fill */
+            linear-gradient(90deg, #632EE3, #9F62F2) border-box;    /* border */
+    color: #632EE3; /* fallback text color */
+}
+
+.btn-secondary:hover {
+    @apply opacity-80;
 }
