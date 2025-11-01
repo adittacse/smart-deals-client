@@ -1,13 +1,24 @@
+import { useContext, useEffect, useRef, useState } from "react";
 import { useLoaderData } from "react-router";
-import { useContext, useRef } from "react";
 import AuthContext from "../../contexts/AuthContext.jsx";
+import Swal from "sweetalert2";
 
 const ProductDetails = () => {
+    const [bids, setBids] = useState([]);
     const product = useLoaderData();
-    const { _id: productId } = product;
+    const {_id: productId} = product;
     const bidModalRef = useRef(null);
     const { user } = useContext(AuthContext);
-    console.log(product);
+    // console.log(product);
+
+    useEffect(() => {
+        fetch(`http://localhost:3000/products/bids/${productId}`)
+            .then(res => res.json())
+            .then(data => {
+                setBids(data);
+            });
+    }, [productId]);
+
     const handleBidModalOpen = () => {
         bidModalRef.current.showModal();
     }
@@ -20,7 +31,7 @@ const ProductDetails = () => {
         const price = e.target.price.value;
         const contact = e.target.contact.value;
 
-        const newBid ={
+        const newBid = {
             product: productId,
             buyer_image: photo,
             buyer_name: name,
@@ -41,7 +52,32 @@ const ProductDetails = () => {
             .then(data => {
                 console.log("after placing bid", data);
                 if (data.insertedId) {
-                    alert("Bid Success");
+                    bidModalRef.current.close();
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your bid has been placed.",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    // add the new bid id to the state
+                    // newBid._id = data.insertedId;
+                    // const newBids = [...bids, newBid];
+                    // newBids.sort((a, b) => b.bid_price - a.bid_price);
+                    // setBids(newBids);
+                    const enriched = {
+                        ...newBid,
+                        _id: data.insertedId,
+                        product_image: product.image,
+                        product_title: product.title,
+                        product_price_min: product.price_min,
+                        product_price_max: product.price_max,
+                    };
+                    setBids(bids => {
+                        const arr = [...bids, enriched];
+                        arr.sort((a, b) => b.bid_price -a.bid_price);
+                        return arr;
+                    });
                 }
             })
     }
@@ -67,23 +103,27 @@ const ProductDetails = () => {
                                         {/* name */}
                                         <div>
                                             <label className="label">Buyer Name</label>
-                                            <input name="name" type="text" className="input" defaultValue={user?.displayName} readOnly />
+                                            <input name="name" type="text" className="input"
+                                                   defaultValue={user?.displayName} readOnly/>
                                         </div>
                                         {/* email */}
                                         <div>
                                             <label className="label">Buyer Email</label>
-                                            <input name="email" type="email" className="input" defaultValue={user?.email} readOnly />
+                                            <input name="email" type="email" className="input"
+                                                   defaultValue={user?.email} readOnly/>
                                         </div>
                                     </div>
                                     {/* image url */}
                                     <label className="label">Buyer Image URL</label>
-                                    <input name="photo" type="text" className="input w-full" defaultValue={user?.photoURL} readOnly />
+                                    <input name="photo" type="text" className="input w-full"
+                                           defaultValue={user?.photoURL} readOnly/>
                                     {/* price */}
                                     <label className="label">Place your Price</label>
-                                    <input name="price" type="text" className="input w-full" placeholder="$600" />
+                                    <input name="price" type="text" className="input w-full" placeholder="$600"/>
                                     {/* contact info */}
                                     <label className="label">Contact Info</label>
-                                    <input name="contact" type="text" className="input w-full" placeholder="e.g. +1-555-1234" />
+                                    <input name="contact" type="text" className="input w-full"
+                                           placeholder="e.g. +1-555-1234"/>
                                     <button className="btn btn-primary mt-4">Submit Bid</button>
                                 </fieldset>
                             </form>
@@ -99,6 +139,66 @@ const ProductDetails = () => {
                 </div>
             </div>
             {/* bids for this product */}
+            <div>
+                <h3 className="font-bold text-5xl my-10">Bids For This Products: <span
+                    className="primary-text">{bids.length}</span></h3>
+                <div className="overflow-x-auto mb-[100px]">
+                    <table className="table">
+                        {/* head */}
+                        <thead>
+                            <tr>
+                                <th>SL No.</th>
+                                <th>Product</th>
+                                <th>Bider</th>
+                                <th>Bid Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            bids.map((bid, index) => <tr key={bid._id}>
+                                <th>{index+1}</th>
+                                <td>
+                                    <div className="flex items-center gap-3">
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle h-12 w-12">
+                                                <img
+                                                    src={bid?.product_image}
+                                                    alt="product image"/>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="font-bold">{bid?.product_title}</div>
+                                            <div className="text-sm opacity-50">${bid?.product_price_min}-{bid?.product_price_max}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="flex items-center gap-3">
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle h-12 w-12">
+                                                <img
+                                                    src={bid?.buyer_image}
+                                                    alt="product image"/>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div className="font-bold">{bid?.buyer_name}</div>
+                                            <div className="text-sm opacity-50">{bid?.buyer_email}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>${bid?.bid_price}</td>
+                                <th>
+                                    <button className="btn btn-outline btn-success mr-2">Accept Offer</button>
+                                    <button className="btn btn-outline btn-error">Reject Offer</button>
+                                </th>
+                            </tr>)
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 };
