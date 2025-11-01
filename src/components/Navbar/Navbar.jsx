@@ -6,8 +6,15 @@ const Navbar = () => {
     const { user, userSignOut } = useContext(AuthContext);
 
     const links = <>
-        <li className="mr-2"><NavLink to="/">Home</NavLink></li>
-        <li className="mr-2"><NavLink to="/all-products">All products</NavLink></li>
+        <li><NavLink to="/">Home</NavLink></li>
+        <li><NavLink to="/all-products">All products</NavLink></li>
+        {
+            user && <>
+                <li><NavLink to="/my-products">My Products</NavLink></li>
+                <li><NavLink to="/my-bids">My Bids</NavLink></li>
+                <li><NavLink to="/create-product">Create Product</NavLink></li>
+            </>
+        }
     </>;
 
     const handleLogout = () => {
@@ -35,7 +42,7 @@ const Navbar = () => {
                 <a className="btn btn-ghost text-xl">Smart<span className="primary">Deals</span></a>
             </div>
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1">
+                <ul className="menu menu-horizontal justify-between px-1">
                     {links}
                 </ul>
             </div>
