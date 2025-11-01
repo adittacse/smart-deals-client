@@ -49,7 +49,6 @@ const Navbar = () => {
             <div className="navbar-end">
                 {
                     !user ? <>
-                        {/*<Link to="/login" className="btn btn-secondary primary mr-2">Login</Link>*/}
                         <Link to="/login" className="btn btn-secondary mr-2">
                             <span className="primary">Login</span>
                         </Link>

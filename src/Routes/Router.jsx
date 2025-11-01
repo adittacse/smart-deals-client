@@ -41,7 +41,7 @@ const Router = createBrowserRouter([
             {
                 path: "create-product",
                 element: <PrivateRoute><CreateProduct /></PrivateRoute>
-            }
+            },
         ]
     },
 ]);
