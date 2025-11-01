@@ -46,7 +46,7 @@ const Navbar = () => {
                         <Link to="/register" className="btn text-white bg-[linear-gradient(90deg,#632EE3_0%,#9F62F2_100%)]">Register</Link>
                     </> : <>
                         <div className="tooltip tooltip-bottom" data-tip={user?.displayName}>
-                            <img className="rounded-full border w-10 h-10 mr-3" src={user?.photoURL} alt="User image"/>
+                            <img className="rounded-full border w-10 h-10 mr-3" src={user?.photoURL || user?.providerData?.[0]?.photoURL} alt="User image"/>
                         </div>
                         <button onClick={handleLogout} className="btn gradient-border primary mr-2">Logout</button>
                     </>
