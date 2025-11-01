@@ -2,33 +2,23 @@ import { useContext, useState } from "react";
 import { Link } from "react-router";
 import AuthContext from "../../contexts/AuthContext.jsx";
 
-const Register = () => {
+const Login = () => {
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
-    const { setUser, createUser, updateUser } = useContext(AuthContext);
+    const { userSignInUser, setUser } = useContext(AuthContext);
 
-    const handleRegister = (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        const name = e.target.name.value;
         const email = e.target.email.value;
-        const photo = e.target.photo.value;
         const password = e.target.password.value;
 
         setSuccess("");
         setError("");
 
-        createUser(email, password)
+        userSignInUser(email, password)
             .then((result) => {
-                updateUser({
-                    displayName: name, photoURL: photo
-                })
-                    .then(() => {
-                        setUser({...result.user, displayName: name, photoURL: photo});
-                        setSuccess("Registered successfully!");
-                    })
-                    .catch((error) => {
-                        setError(error.message);
-                    });
+                setUser(result.user);
+                setSuccess("Logged in successfully!");
             })
             .catch((error) => {
                 setError(error.message);
@@ -40,26 +30,23 @@ const Register = () => {
             <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
                 <div className="card-body">
                     <div className="text-center text-secondary">
-                        <h1 className="text-[32px] font-semibold">Register now!</h1>
+                        <h1 className="text-[32px] font-semibold">Login</h1>
                         <p className="mt-2 mb-4">
-                            Already have an account? <Link className="primary" to="/login">Login Now</Link>
+                            Don't have an account? <Link className="primary" to="/register">Register Now</Link>
                         </p>
                     </div>
-                    <form onSubmit={handleRegister}>
+                    <form onSubmit={handleLogin}>
                         <fieldset className="fieldset">
-                            {/*name*/}
-                            <label className="label text-secondary">Name</label>
-                            <input name="name" type="text" className="input" placeholder="Your Name" />
                             {/*email*/}
                             <label className="label text-secondary">Email</label>
                             <input name="email" type="email" className="input" placeholder="Your Email" />
-                            {/*photo*/}
-                            <label className="label text-secondary">Image-URL</label>
-                            <input name="photo" type="text" className="input" placeholder="Your Image URL" />
                             {/*password*/}
                             <label className="label text-secondary">Password</label>
                             <input name="password" type="password" className="input" placeholder="******" />
-                            <button className="btn bg-[linear-gradient(90deg,#632EE3_0%,#9F62F2_100%)] text-white font-semibold mt-4">Register</button>
+                            <div>
+                                <a className="link link-hover text-secondary">Forgot password?</a>
+                            </div>
+                            <button className="btn bg-[linear-gradient(90deg,#632EE3_0%,#9F62F2_100%)] text-white font-semibold mt-4">Sign In</button>
                         </fieldset>
                     </form>
                     {
@@ -80,4 +67,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Login;

@@ -16,3 +16,9 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
 }
+
+.gradient-border {
+    border: 1px solid transparent;
+    border-image: linear-gradient(90deg, #632EE3, #9F62F2) 1;
+    /*border-radius: 30px !important;*/
+}

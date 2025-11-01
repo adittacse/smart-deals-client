@@ -1,12 +1,24 @@
-import React from 'react';
-import {NavLink} from "react-router";
+import { useContext } from "react";
+import { Link, NavLink } from "react-router";
+import AuthContext from "../../contexts/AuthContext.jsx";
 
 const Navbar = () => {
+    const { user, userSignOut } = useContext(AuthContext);
+
     const links = <>
         <li className="mr-2"><NavLink to="/">Home</NavLink></li>
         <li className="mr-2"><NavLink to="/all-products">All products</NavLink></li>
-        <li className="mr-2"><NavLink to="/register">Register</NavLink></li>
-    </>
+    </>;
+
+    const handleLogout = () => {
+        userSignOut()
+            .then(() => {
+                console.log("User signed out");
+            })
+            .catch((error) => {
+                console.log(error.message);
+            })
+    }
 
     return (
         <div className="navbar bg-base-100 shadow-sm">
@@ -28,7 +40,17 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <a className="btn">Button</a>
+                {
+                    !user ? <>
+                        <Link to="/login" className="btn gradient-border primary mr-2">Login</Link>
+                        <Link to="/register" className="btn text-white bg-[linear-gradient(90deg,#632EE3_0%,#9F62F2_100%)]">Register</Link>
+                    </> : <>
+                        <div className="tooltip tooltip-bottom" data-tip={user?.displayName}>
+                            <img className="rounded-full border w-10 h-10 mr-3" src={user?.photoURL} alt="User image"/>
+                        </div>
+                        <button onClick={handleLogout} className="btn gradient-border primary mr-2">Logout</button>
+                    </>
+                }
             </div>
         </div>
     );
