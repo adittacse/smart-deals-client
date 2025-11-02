@@ -30,7 +30,7 @@ const Footer = () => {
                 <a className="link link-hover text-white flex items-center gap-2"><IoCallOutline /> <span className="text-[#A1A1AA]">+880 123 456 789</span></a>
                 <a className="link link-hover text-white flex items-center gap-2"><IoLocationOutline /> <span className="text-[#A1A1AA]">123 Commerce Street, <br />Dhaka, Bangladesh</span></a>
             </nav>
-            <nav>
+            <nav className="space-y-4">
                 <h6 className="text-white text-[20px] font-medium">Social</h6>
                 <div className="grid grid-flow-col gap-4">
                     <a>
