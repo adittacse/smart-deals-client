@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import Swal from "sweetalert2";
+import Loading from "../Loading/Loading.jsx";
 
 const MyBids = () => {
     const [myBids, setMyBids] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
@@ -12,6 +14,7 @@ const MyBids = () => {
                 .then(res => res.json())
                 .then(data => {
                     setMyBids(data);
+                    setLoading(false);
                 });
         }
     }, [user?.email]);
@@ -47,21 +50,25 @@ const MyBids = () => {
         });
     }
 
+    if (loading) {
+        return <Loading />
+    }
+
     return (
         <div>
             <h2 className="text-center text-5xl font-bold mt-20">My Bids: <span className="primary-text">{myBids.length}</span></h2>
-            <div className="overflow-x-auto mt-10 mb-20">
+            <div className="overflow-x-auto bg-white mt-10 mb-20">
                 <table className="table">
                     {/* head */}
-                    <thead>
-                    <tr>
-                        <th>SL No.</th>
-                        <th>Product</th>
-                        <th>Bider</th>
-                        <th>Bid Price</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
+                    <thead className="bg-[#AAACBB07]">
+                        <tr>
+                            <th>SL No.</th>
+                            <th>Product</th>
+                            <th>Bider</th>
+                            <th>Bid Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {

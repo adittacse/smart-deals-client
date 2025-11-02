@@ -2,9 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import { Link } from "react-router";
 import Swal from "sweetalert2";
+import Loading from "../Loading/Loading.jsx";
 
 const MyProducts = () => {
     const [myProducts, setMyProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
@@ -13,6 +15,7 @@ const MyProducts = () => {
                 .then(res => res.json())
                 .then(data => {
                     setMyProducts(data);
+                    setLoading(false);
                 });
         }
     }, [user?.email]);
@@ -48,13 +51,17 @@ const MyProducts = () => {
         });
     }
 
+    if (loading) {
+        return <Loading />
+    }
+
     return (
         <div>
             <h2 className="text-center text-5xl font-bold mt-20">My Products: <span className="primary-text">{myProducts.length}</span></h2>
-            <div className="overflow-x-auto mt-10 mb-20">
+            <div className="overflow-x-auto bg-white mt-10 mb-20">
                 <table className="table">
                     {/* head */}
-                    <thead>
+                    <thead className="bg-[#AAACBB07]">
                     <tr>
                         <th>SL No.</th>
                         <th>Image</th>

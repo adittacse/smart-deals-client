@@ -196,10 +196,10 @@ const ProductDetails = () => {
             <div>
                 <h3 className="font-bold text-5xl my-10">Bids For This Products: <span
                     className="primary-text">{bids.length}</span></h3>
-                <div className="overflow-x-auto mb-[100px]">
+                <div className="overflow-x-auto bg-white mb-[100px]">
                     <table className="table">
                         {/* head */}
-                        <thead>
+                        <thead className="bg-[#AAACBB07]">
                             <tr>
                                 <th>SL No.</th>
                                 <th>Product</th>
