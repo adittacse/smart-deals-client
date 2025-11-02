@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/AuthContext.jsx";
-import {Link} from "react-router";
+import { Link } from "react-router";
 
 const MyProducts = () => {
     const [myProducts, setMyProducts] = useState([]);

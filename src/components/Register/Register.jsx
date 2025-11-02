@@ -58,7 +58,11 @@ const Register = () => {
                     .then((res) => res.json())
                     .then((data) => {
                         if (data?.message) {
-                            setError(data.message);
+                            if (data.message === "User already exists.") {
+                                setSuccess("Logged in successfully!");
+                            } else {
+                                setError(data.message);
+                            }
                         } else {
                             setUser(result.user);
                             setSuccess("Logged in successfully!");
