@@ -1,38 +1,42 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import AuthContext from "../../contexts/AuthContext.jsx";
 
 const CreateProduct = () => {
     const [condition, setCondition] = useState("fresh");
+    const { user } = useContext(AuthContext);
 
     const handleCreateProduct = (e) => {
         e.preventDefault();
         const title = e.target.title.value;
         const category = e.target.category.value;
-        const minPrice = e.target.price_min.value;
-        const maxPrice = e.target.price_max.value;
+        const price_min = e.target.price_min.value;
+        const price_max = e.target.price_max.value;
         const condition = e.target.condition.value;
-        const usageTime = e.target.product_usage_time.value;
-        const productPhotoURL = e.target.product_image_url.value;
-        const sellerName = e.target.seller_name.value;
-        const sellerEmail = e.target.seller_email.value;
-        const sellerContact = e.target.seller_contact.value;
-        const sellerPhotoURL = e.target.seller_image_url.value;
+        const usage = e.target.product_usage_time.value;
+        const image = e.target.product_image_url.value;
+        const status = "pending";
+        const seller_name = e.target.seller_name.value;
+        const email = e.target.seller_email.value;
+        const seller_contact = e.target.seller_contact.value;
+        const seller_image = e.target.seller_image_url.value;
         const location = e.target.location.value;
         const description = e.target.description.value;
 
         const newProduct = {
             title,
             category,
-            minPrice,
-            maxPrice,
+            price_min,
+            price_max,
             condition,
-            usageTime,
-            productPhotoURL,
-            sellerName,
-            sellerEmail,
-            sellerContact,
-            sellerPhotoURL,
+            usage,
+            image,
+            status,
+            seller_name,
+            email,
+            seller_contact,
+            seller_image,
             location,
             description
         };
@@ -46,7 +50,6 @@ const CreateProduct = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 if (data.insertedId) {
                     Swal.fire({
                         position: "top-end",
@@ -160,7 +163,7 @@ const CreateProduct = () => {
                                         <span className="label-text text-secondary">Seller Name</span>
                                     </label>
                                     <input name="seller_name" type="text" className="input input-bordered w-full"
-                                           placeholder="e.g. Artisan Roasters" required/>
+                                           value={user?.displayName} disabled />
                                 </div>
 
                                 {/* seller email */}
@@ -169,7 +172,7 @@ const CreateProduct = () => {
                                         <span className="label-text text-secondary">Seller Email</span>
                                     </label>
                                     <input name="seller_email" type="email" className="input input-bordered w-full"
-                                           placeholder="leli31955@nrlord.com"/>
+                                           value={user?.email} disabled />
                                 </div>
                             </div>
 
@@ -190,7 +193,7 @@ const CreateProduct = () => {
                                         <span className="label-text text-secondary">Seller Image URL</span>
                                     </label>
                                     <input name="seller_image_url" type="text" className="input input-bordered w-full"
-                                           placeholder="https://..."/>
+                                           value={user?.photoURL} disabled />
                                 </div>
                             </div>
 

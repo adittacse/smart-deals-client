@@ -9,7 +9,7 @@ const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        const name = e.target.name.value;
+        const displayName = e.target.name.value;
         const email = e.target.email.value;
         const photo = e.target.photo.value;
         const password = e.target.password.value;
@@ -20,7 +20,7 @@ const Register = () => {
         createUser(email, password)
             .then((result) => {
                 updateUser({
-                    displayName: name, photoURL: photo
+                    displayName: displayName, photoURL: photo
                 })
                     .then(() => {
                         setUser({...result.user, displayName: name, photoURL: photo});
