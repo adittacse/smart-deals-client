@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import AuthContext from "../../contexts/AuthContext.jsx";
+import {Link} from "react-router";
 
 const CreateProduct = () => {
     const [condition, setCondition] = useState("fresh");
@@ -66,7 +67,9 @@ const CreateProduct = () => {
 
     return (
         <div className="my-20">
-            <h4 className="text-[20px] font-medium flex items-center gap-2 justify-center mb-4"><FaArrowLeftLong /> Back To Products</h4>
+            <h4 className="text-[20px] font-medium text-secondary mb-4">
+                <Link className="flex items-center justify-center gap-2" to="/all-products"><FaArrowLeftLong /> Back To Products</Link>
+            </h4>
             <h2 className="text-center text-5xl font-bold mb-10">Create <span className="primary-text">A Product</span></h2>
             <div className="card bg-base-100 w-full max-w-3xl shrink-0 shadow-2xl mx-auto">
                 <div className="card-body">

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import {Link, useLoaderData} from "react-router";
+import { Link, useLoaderData } from "react-router";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import Swal from "sweetalert2";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -97,8 +97,8 @@ const ProductDetails = () => {
             <div className="my-20">
                 <div className="flex  gap-10">
                     <div className="w-5/12">
-                        <img className="mb-[30px]" src={product?.image} alt="product image" />
-                        <div className="card p-6">
+                        <img className="rounded-lg mb-[30px]" src={product?.image} alt="product image" />
+                        <div className="card bg-white shadow-lg p-6">
                             <h3 className="text-2xl font-semibold mb-6">Product Description</h3>
                             <div className="flex items-center justify-between font-semibold mb-3">
                                 <p><span className="primary-text">Condition</span>: {product?.condition}</p>
@@ -118,18 +118,18 @@ const ProductDetails = () => {
                             <div className="badge badge-info">{product?.category}</div>
                         </div>
 
-                        <div className="p-6 mb-6">
+                        <div className="bg-white shadow-lg p-6 mb-6">
                             <h4 className="font-bold text-[28px] text-[#4CAF50]">${product.price_min} - {product.price_max}</h4>
                             <p className="text-secondary mt-2">Price starts from</p>
                         </div>
 
-                        <div className="p-6 mb-6">
+                        <div className="bg-white shadow-lg p-6 mb-6">
                             <h4 className="font-semibold text-2xl text-secondary mb-6">Product Details</h4>
                             <p className="text-secondary mb-3"><span className="font-semibold">Product ID:</span> {product?._id}</p>
                             <p className="text-secondary"><span className="font-semibold">Posted:</span> {formatDate(product?.created_at)}</p>
                         </div>
 
-                        <div className="p-6 mb-6">
+                        <div className="bg-white shadow-lg p-6 mb-6">
                             <h4 className="font-semibold text-2xl text-secondary mb-6">Seller Information</h4>
                             <div className="flex items-center gap-4 mb-4">
                                 <img className="w-[56px] h-[56px] rounded-full" src={product?.seller_image} alt="seller image"/>
