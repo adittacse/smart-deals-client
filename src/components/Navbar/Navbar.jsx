@@ -55,9 +55,9 @@ const Navbar = () => {
                         <Link to="/register" className="btn btn-primary">Register</Link>
                     </> : <>
                         <div className="tooltip tooltip-bottom" data-tip={user?.displayName}>
-                            <img className="rounded-full border w-10 h-10 mr-3" src={user?.photoURL || user?.providerData?.[0]?.photoURL} alt="User image"/>
+                            <img className="rounded-full w-10 h-10 mr-3" src={user?.photoURL || user?.providerData?.[0]?.photoURL} alt="User image"/>
                         </div>
-                        <button onClick={handleLogout} className="btn gradient-border primary mr-2">Logout</button>
+                        <button onClick={handleLogout} className="btn btn-primary">Logout</button>
                     </>
                 }
             </div>
