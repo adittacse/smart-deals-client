@@ -1,7 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { useLoaderData } from "react-router";
+import {Link, useLoaderData} from "react-router";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import Swal from "sweetalert2";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import { format, parseISO } from "date-fns";
 
 const ProductDetails = () => {
     const [bids, setBids] = useState([]);
@@ -9,7 +11,6 @@ const ProductDetails = () => {
     const {_id: productId} = product;
     const bidModalRef = useRef(null);
     const { user } = useContext(AuthContext);
-    // console.log(product);
 
     useEffect(() => {
         fetch(`http://localhost:3000/products/bids/${productId}`)
@@ -18,6 +19,14 @@ const ProductDetails = () => {
                 setBids(data);
             });
     }, [productId]);
+
+    const formatDate = (value) => {
+        if (!value) {
+            return "";
+        }
+        const dt = typeof value === "string" ? parseISO(value) : value;
+        return format(dt, "dd/MM/yyyy");
+    };
 
     const handleBidModalOpen = () => {
         bidModalRef.current.showModal();
@@ -85,59 +94,104 @@ const ProductDetails = () => {
     return (
         <div>
             {/* product info */}
-            <div>
-                <div>
-                    //
-                </div>
-
-                <div>
-                    <button onClick={handleBidModalOpen} className="btn btn-primary">I want Buy This Product</button>
-
-                    <dialog ref={bidModalRef} className="modal modal-bottom sm:modal-middle">
-                        <div className="modal-box">
-                            <h3 className="font-bold text-2xl text-center">Give Seller Your Offered Price</h3>
-
-                            <form onSubmit={handleBidSubmit}>
-                                <fieldset className="fieldset">
-                                    <div className="flex gap-4">
-                                        {/* name */}
-                                        <div>
-                                            <label className="label">Buyer Name</label>
-                                            <input name="name" type="text" className="input"
-                                                   defaultValue={user?.displayName} readOnly/>
-                                        </div>
-                                        {/* email */}
-                                        <div>
-                                            <label className="label">Buyer Email</label>
-                                            <input name="email" type="email" className="input"
-                                                   defaultValue={user?.email} readOnly/>
-                                        </div>
-                                    </div>
-                                    {/* image url */}
-                                    <label className="label">Buyer Image URL</label>
-                                    <input name="photo" type="text" className="input w-full"
-                                           defaultValue={user?.photoURL} readOnly/>
-                                    {/* price */}
-                                    <label className="label">Place your Price</label>
-                                    <input name="price" type="text" className="input w-full" placeholder="$600"/>
-                                    {/* contact info */}
-                                    <label className="label">Contact Info</label>
-                                    <input name="contact" type="text" className="input w-full"
-                                           placeholder="e.g. +1-555-1234"/>
-                                    <button className="btn btn-primary mt-4">Submit Bid</button>
-                                </fieldset>
-                            </form>
-
-                            <div className="modal-action">
-                                <form method="dialog">
-                                    {/* if there is a button in form, it will close the modal */}
-                                    <button className="btn btn-secondary mr-4">Cancel</button>
-                                </form>
+            <div className="my-20">
+                <div className="flex  gap-10">
+                    <div className="w-5/12">
+                        <img className="mb-[30px]" src={product?.image} alt="product image" />
+                        <div className="card p-6">
+                            <h3 className="text-2xl font-semibold mb-6">Product Description</h3>
+                            <div className="flex items-center justify-between font-semibold mb-3">
+                                <p><span className="primary-text">Condition</span>: {product?.condition}</p>
+                                <p><span className="primary-text">Usage Time</span>: {product?.usage}</p>
                             </div>
+                            <hr className="mb-6" />
+                            <p className="font-medium">{product?.description}</p>
                         </div>
-                    </dialog>
+                    </div>
+
+                    <div className="w-7/12">
+                        <div className="mb-6">
+                            <h4 className="text-[20px] font-medium text-secondary mb-4">
+                                <Link className="flex items-center gap-2" to="/all-products"><FaArrowLeftLong /> Back To Products</Link>
+                            </h4>
+                            <h2 className="text-5xl text-secondary font-bold mb-[22px]">{product?.title}</h2>
+                            <div className="badge badge-info">{product?.category}</div>
+                        </div>
+
+                        <div className="p-6 mb-6">
+                            <h4 className="font-bold text-[28px] text-[#4CAF50]">${product.price_min} - {product.price_max}</h4>
+                            <p className="text-secondary mt-2">Price starts from</p>
+                        </div>
+
+                        <div className="p-6 mb-6">
+                            <h4 className="font-semibold text-2xl text-secondary mb-6">Product Details</h4>
+                            <p className="text-secondary mb-3"><span className="font-semibold">Product ID:</span> {product?._id}</p>
+                            <p className="text-secondary"><span className="font-semibold">Posted:</span> {formatDate(product?.created_at)}</p>
+                        </div>
+
+                        <div className="p-6 mb-6">
+                            <h4 className="font-semibold text-2xl text-secondary mb-6">Seller Information</h4>
+                            <div className="flex items-center gap-4 mb-4">
+                                <img className="w-[56px] h-[56px] rounded-full" src={product?.seller_image} alt="seller image"/>
+                                <div>
+                                    <p className="font-semibold">{product?.seller_name}</p>
+                                    <p>{product?.email}</p>
+                                </div>
+                            </div>
+                            <p className="text-secondary mb-3"><span className="font-semibold">Location:</span> {product?.location}</p>
+                            <p className="text-secondary mb-3"><span className="font-semibold">Contact:</span> {product?.seller_contact}</p>
+                            <p className="text-secondary"><span className="font-semibold">Status:</span> <span className="badge badge-warning">{product?.status}</span></p>
+                        </div>
+
+                        <button onClick={handleBidModalOpen} className="btn btn-primary w-full">I want Buy This Product</button>
+
+                        <dialog ref={bidModalRef} className="modal modal-bottom sm:modal-middle">
+                            <div className="modal-box">
+                                <h3 className="font-bold text-2xl text-center">Give Seller Your Offered Price</h3>
+
+                                <form onSubmit={handleBidSubmit}>
+                                    <fieldset className="fieldset">
+                                        <div className="flex gap-4">
+                                            {/* name */}
+                                            <div>
+                                                <label className="label">Buyer Name</label>
+                                                <input name="name" type="text" className="input"
+                                                       defaultValue={user?.displayName} readOnly/>
+                                            </div>
+                                            {/* email */}
+                                            <div>
+                                                <label className="label">Buyer Email</label>
+                                                <input name="email" type="email" className="input"
+                                                       defaultValue={user?.email} readOnly/>
+                                            </div>
+                                        </div>
+                                        {/* image url */}
+                                        <label className="label">Buyer Image URL</label>
+                                        <input name="photo" type="text" className="input w-full"
+                                               defaultValue={user?.photoURL} readOnly/>
+                                        {/* price */}
+                                        <label className="label">Place your Price</label>
+                                        <input name="price" type="text" className="input w-full" placeholder="$600"/>
+                                        {/* contact info */}
+                                        <label className="label">Contact Info</label>
+                                        <input name="contact" type="text" className="input w-full"
+                                               placeholder="e.g. +1-555-1234"/>
+                                        <button className="btn btn-primary mt-4">Submit Bid</button>
+                                    </fieldset>
+                                </form>
+
+                                <div className="modal-action">
+                                    <form method="dialog">
+                                        {/* if there is a button in form, it will close the modal */}
+                                        <button className="btn btn-secondary mr-4">Cancel</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </dialog>
+                    </div>
                 </div>
             </div>
+
             {/* bids for this product */}
             <div>
                 <h3 className="font-bold text-5xl my-10">Bids For This Products: <span
