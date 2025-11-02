@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/AuthContext.jsx";
+import {Link} from "react-router";
 
 const MyProducts = () => {
     const [myProducts, setMyProducts] = useState([]);
@@ -44,12 +45,16 @@ const MyProducts = () => {
                                 </div>
                             </td>
                             <td>
-                                <div className="font-bold">{product?.title}</div>
+                                <p className="font-medium text-secondary">
+                                    <Link to={`/product-details/${product?._id}`}>{product?.title}</Link>
+                                </p>
                             </td>
                             <td>
-                                <div className="font-bold">{product?.category}</div>
+                                <p className="font-medium text-secondary">{product?.category}</p>
                             </td>
-                            <td>${product?.price_min}-{product?.price_max}</td>
+                            <td>
+                                <p className="font-medium text-secondary">${product?.price_min}-{product?.price_max}</p>
+                            </td>
                             <td>
                                 {
                                     product?.status === "pending" ? <div className="badge badge-warning">Pending</div>
