@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import { Link } from "react-router";
+import Swal from "sweetalert2";
 
 const MyProducts = () => {
     const [myProducts, setMyProducts] = useState([]);
@@ -15,6 +16,37 @@ const MyProducts = () => {
                 });
         }
     }, [user?.email]);
+
+    const handleProductDelete = (_id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`http://localhost:3000/products/${_id}`, {
+                    method: "DELETE"
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.deletedCount) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your product has been deleted.",
+                                icon: "success"
+                            });
+                            // remaining products
+                            const remainingProducts = myProducts.filter(product => product._id !== _id);
+                            setMyProducts(remainingProducts);
+                        }
+                    })
+            }
+        });
+    }
 
     return (
         <div>
@@ -63,7 +95,7 @@ const MyProducts = () => {
                             </td>
                             <th className="flex items-center gap-2">
                                 <button className="btn btn-outline btn-primary">Edit</button>
-                                <button className="btn btn-outline btn-error">Delete</button>
+                                <button onClick={() => handleProductDelete(product._id)} className="btn btn-outline btn-error">Delete</button>
                                 <button className="btn btn-outline btn-success">Make Sold</button>
                             </th>
                         </tr>)

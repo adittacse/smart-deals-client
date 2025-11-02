@@ -11,6 +11,7 @@ const CreateProduct = () => {
         e.preventDefault();
         const title = e.target.title.value;
         const category = e.target.category.value;
+        const created_at = new Date();
         const price_min = e.target.price_min.value;
         const price_max = e.target.price_max.value;
         const condition = e.target.condition.value;
@@ -27,6 +28,7 @@ const CreateProduct = () => {
         const newProduct = {
             title,
             category,
+            created_at,
             price_min,
             price_max,
             condition,
