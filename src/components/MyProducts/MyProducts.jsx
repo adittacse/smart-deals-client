@@ -6,6 +6,7 @@ import Loading from "../Loading/Loading.jsx";
 
 const MyProducts = () => {
     const [myProducts, setMyProducts] = useState([]);
+    const [status, setStatus] = useState({});
     const [loading, setLoading] = useState(true);
     const { user } = useContext(AuthContext);
 
@@ -15,6 +16,11 @@ const MyProducts = () => {
                 .then(res => res.json())
                 .then(data => {
                     setMyProducts(data);
+                    const map = {};
+                    for (const p of data) {
+                        map[p._id] = (p.status || "pending").toLowerCase();
+                    }
+                    setStatus(map);
                     setLoading(false);
                 });
         }
@@ -49,6 +55,56 @@ const MyProducts = () => {
                     })
             }
         });
+    }
+
+    const handleMakeSold = (_id) => {
+        const status = "sold";
+
+        fetch(`http://localhost:3000/products/${_id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({status: status})
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount) {
+                    setStatus(prev => ({ ...prev, [_id]: "sold" }));
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your product has been sold",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+    }
+
+    const handleMakePending = (_id) => {
+        const status = "pending";
+
+        fetch(`http://localhost:3000/products/${_id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({status: status})
+        })
+        .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount) {
+                    setStatus(prev => ({ ...prev, [_id]: "pending" }));
+                    Swal.fire({
+                        position: "top-end",
+                        icon: "success",
+                        title: "Your product has been pending now",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
     }
 
     if (loading) {
@@ -94,16 +150,24 @@ const MyProducts = () => {
                             <td>
                                 <p className="font-medium text-secondary">${product?.price_min}-{product?.price_max}</p>
                             </td>
+
                             <td>
-                                {
-                                    product?.status === "pending" ? <div className="badge badge-warning">Pending</div>
-                                        : <div className="badge badge-success">Accepted</div>
-                                }
+                                {(() => {
+                                    const cur = (status[product._id] ?? product.status ?? "pending").toLowerCase();
+                                    return cur === "sold"
+                                        ? <div className="badge badge-success">Sold</div>
+                                        : <div className="badge badge-warning">Pending</div>;
+                                })()}
                             </td>
                             <th className="flex items-center gap-2">
                                 <Link to={`/edit-product/${product._id}`} className="btn btn-outline btn-primary">Edit</Link>
                                 <button onClick={() => handleProductDelete(product._id)} className="btn btn-outline btn-error">Delete</button>
-                                <button className="btn btn-outline btn-success">Make Sold</button>
+                                {(() => {
+                                    const cur = (status[product._id] ?? product.status ?? "pending").toLowerCase();
+                                    return cur === "sold"
+                                        ? <button onClick={() => handleMakePending(product._id)} className="btn btn-outline btn-warning">Make Pending</button>
+                                        : <button onClick={() => handleMakeSold(product._id)} className="btn btn-outline btn-success">Make Sold</button>;
+                                })()}
                             </th>
                         </tr>)
                     }
