@@ -10,6 +10,7 @@ const EditProduct = () => {
     const [title, setTitle] = useState("");
     const [condition, setCondition] = useState("");
     const [category, setCategory] = useState("");
+    const [currentStatus, setCurrentStatus] = useState("");
     const product = useLoaderData();
     const categories = use(categoriesPromise);
 
@@ -17,6 +18,7 @@ const EditProduct = () => {
         setTitle(product?.title);
         setCategory(product?.category);
         setCondition(product?.condition);
+        setCurrentStatus(product?.status);
     }, [product?.id]);
 
 
@@ -30,7 +32,7 @@ const EditProduct = () => {
         const condition = e.target.condition.value;
         const usage = e.target.product_usage_time.value;
         const image = e.target.product_image_url.value;
-        const status = "pending";
+        const status = currentStatus;
         const seller_name = e.target.seller_name.value;
         const email = e.target.seller_email.value;
         const seller_contact = e.target.seller_contact.value;
@@ -232,7 +234,7 @@ const EditProduct = () => {
  guitar is so tough..... "></textarea>
                             </div>
 
-                            <button className="btn btn-primary">Create A Product</button>
+                            <button className="btn btn-primary">Update Product</button>
                         </fieldset>
                     </form>
                 </div>
