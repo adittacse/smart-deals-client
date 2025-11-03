@@ -99,7 +99,7 @@ const MyProducts = () => {
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
-                        title: "Your product has been pending now",
+                        title: "Your product is pending now",
                         showConfirmButton: false,
                         timer: 1500
                     });
