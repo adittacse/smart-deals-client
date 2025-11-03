@@ -101,7 +101,7 @@ const MyProducts = () => {
                                 }
                             </td>
                             <th className="flex items-center gap-2">
-                                <button className="btn btn-outline btn-primary">Edit</button>
+                                <Link to={`/edit-product/${product._id}`} className="btn btn-outline btn-primary">Edit</Link>
                                 <button onClick={() => handleProductDelete(product._id)} className="btn btn-outline btn-error">Delete</button>
                                 <button className="btn btn-outline btn-success">Make Sold</button>
                             </th>
