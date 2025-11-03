@@ -1,11 +1,13 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router";
+import {Link, useLocation, useNavigate} from "react-router";
 import AuthContext from "../../contexts/AuthContext.jsx";
 
 const Register = () => {
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
     const { createUser, updateUser, setUser, googleSignIn } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -25,6 +27,7 @@ const Register = () => {
                     .then(() => {
                         setUser({...result.user, displayName: name, photoURL: photo});
                         setSuccess("Registered successfully!");
+                        navigate(location?.state || "/", { replace: true });
                     })
                     .catch((error) => {
                         setError(error.message);
@@ -60,12 +63,14 @@ const Register = () => {
                         if (data?.message) {
                             if (data.message === "User already exists.") {
                                 setSuccess("Logged in successfully!");
+                                navigate(location?.state || "/", { replace: true });
                             } else {
                                 setError(data.message);
                             }
                         } else {
                             setUser(result.user);
                             setSuccess("Logged in successfully!");
+                            navigate(location?.state || "/", { replace: true });
                         }
                     })
             })

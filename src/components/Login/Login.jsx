@@ -1,11 +1,13 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import AuthContext from "../../contexts/AuthContext.jsx";
 
 const Login = () => {
     const [success, setSuccess] = useState("");
     const [error, setError] = useState("");
     const { userSignInUser, setUser, googleSignIn } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -19,6 +21,7 @@ const Login = () => {
             .then((result) => {
                 setUser(result.user);
                 setSuccess("Logged in successfully!");
+                navigate(location?.state || "/", { replace: true });
             })
             .catch((error) => {
                 setError(error.message);
@@ -50,12 +53,14 @@ const Login = () => {
                         if (data?.message) {
                             if (data.message === "User already exists.") {
                                 setSuccess("Logged in successfully!");
+                                navigate(location?.state || "/", { replace: true });
                             } else {
                                 setError(data.message);
                             }
                         } else {
                             setUser(result.user);
                             setSuccess("Logged in successfully!");
+                            navigate(location?.state || "/", { replace: true });
                         }
                     })
             })
@@ -71,7 +76,7 @@ const Login = () => {
                     <div className="text-center text-secondary">
                         <h1 className="text-[32px] font-semibold">Login</h1>
                         <p className="mt-2 mb-4">
-                            Don't have an account? <Link className="primary-text" to="/register">Register Now</Link>
+                            Don't have an account? <Link state={location?.state} className="primary-text" to="/register">Register Now</Link>
                         </p>
                     </div>
                     <form onSubmit={handleLogin}>
