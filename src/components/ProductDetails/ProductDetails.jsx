@@ -13,12 +13,16 @@ const ProductDetails = () => {
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/products/bids/${productId}`)
+        fetch(`http://localhost:3000/products/bids/${productId}`, {
+            headers: {
+                authorization: `Bearer ${user.accessToken}`
+            }
+        })
             .then(res => res.json())
             .then(data => {
                 setBids(data);
             });
-    }, [productId]);
+    }, [productId, user]);
 
     const formatDate = (value) => {
         if (!value) {
