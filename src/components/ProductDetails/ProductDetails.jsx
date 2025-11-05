@@ -4,25 +4,40 @@ import AuthContext from "../../contexts/AuthContext.jsx";
 import Swal from "sweetalert2";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { format, parseISO } from "date-fns";
+import axios from "axios";
 
 const ProductDetails = () => {
     const [bids, setBids] = useState([]);
     const product = useLoaderData();
-    const {_id: productId} = product;
+    const { _id: productId } = product;
     const bidModalRef = useRef(null);
     const { user } = useContext(AuthContext);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/products/bids/${productId}`, {
-            headers: {
-                authorization: `Bearer ${user.accessToken}`
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                setBids(data);
-            });
+        if (user) {
+            axios.get(`http://localhost:3000/products/bids/${productId}`, {
+                headers: {
+                    authorization: `Bearer ${user.accessToken}`
+                }
+            })
+                .then(data => {
+                    console.log("after axios get:", data.data);
+                    setBids(data.data);
+                })
+        }
     }, [productId, user]);
+
+    // useEffect(() => {
+    //     fetch(`http://localhost:3000/products/bids/${productId}`, {
+    //         headers: {
+    //             authorization: `Bearer ${user.accessToken}`
+    //         }
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             setBids(data);
+    //         });
+    // }, [productId, user]);
 
     const formatDate = (value) => {
         if (!value) {
