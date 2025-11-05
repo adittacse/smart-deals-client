@@ -12,7 +12,11 @@ const MyProducts = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:3000/products?email=${user.email}`)
+            fetch(`http://localhost:3000/products?email=${user.email}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            })
                 .then(res => res.json())
                 .then(data => {
                     setMyProducts(data);

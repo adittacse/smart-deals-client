@@ -8,11 +8,12 @@ const MyBids = () => {
     const [loading, setLoading] = useState(true);
     const { user } = useContext(AuthContext);
 
+    // for the jwt authorization
     useEffect(() => {
         if (user?.email) {
             fetch(`http://localhost:3000/my-bids?email=${user.email}`, {
                 headers: {
-                    authorization: `Bearer ${user.accessToken}`
+                    authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             })
                 .then(res => res.json())
@@ -22,6 +23,22 @@ const MyBids = () => {
                 });
         }
     }, [user?.email]);
+
+    // for the firebase authorization
+    // useEffect(() => {
+    //     if (user?.email) {
+    //         fetch(`http://localhost:3000/my-bids?email=${user.email}`, {
+    //             headers: {
+    //                 authorization: `Bearer ${user.accessToken}`
+    //             }
+    //         })
+    //             .then(res => res.json())
+    //             .then(data => {
+    //                 setMyBids(data);
+    //                 setLoading(false);
+    //             });
+    //     }
+    // }, [user?.email]);
 
     const handleDeleteBid = (_id) => {
         Swal.fire({
