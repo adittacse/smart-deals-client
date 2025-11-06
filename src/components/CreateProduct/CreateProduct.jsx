@@ -3,12 +3,12 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import { Link } from "react-router";
-import useAxios from "../../hooks/useAxios.jsx";
+import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 
 const CreateProduct = () => {
     const [condition, setCondition] = useState("fresh");
     const { user } = useContext(AuthContext);
-    const axiosInstance = useAxios();
+    const axiosSecure = useAxiosSecure();
 
     const handleCreateProduct = (e) => {
         e.preventDefault();
@@ -46,7 +46,7 @@ const CreateProduct = () => {
             description
         };
 
-        axiosInstance.post("/products", newProduct)
+        axiosSecure.post("/products", newProduct)
             .then((data) => {
                 if (data.data.insertedId) {
                     Swal.fire({
