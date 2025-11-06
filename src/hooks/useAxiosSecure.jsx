@@ -1,22 +1,55 @@
-import React, {useContext} from 'react';
+import { useContext, useEffect } from 'react';
 import axios from "axios";
 import AuthContext from "../contexts/AuthContext.jsx";
+import { useNavigate } from "react-router";
+import Swal from "sweetalert2";
 
 const instance = axios.create({
     baseURL: "http://localhost:3000",
 });
 
 const useAxiosSecure = () => {
-    const { user } = useContext(AuthContext);
+    const { user, userSignOut } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     // set token in the header for all the api call using axiosSecure hook
-    instance.interceptors.request.use((config) => {
-        if (user) {
-            config.headers.authorization = `Bearer ${user.accessToken}`;
-            console.log(config);
-            return config;
+    useEffect(() => {
+        // request interceptor
+        const requestInterceptor = instance.interceptors.request.use((config) => {
+            const token = user.accessToken;
+            if (token) {
+                config.headers.authorization = `Bearer ${user.accessToken}`;
+                return config;
+            }
+        });
+
+        // response interceptor
+        const responseInterceptor = instance.interceptors.response.use(res => {
+            return res;
+        }, err => {
+            const status = err.status;
+            if (status === 401 || status === 403) {
+                // log out the user for bad intention request
+                userSignOut()
+                    .then(() => {
+                        navigate("/login");
+                    })
+                    .catch((error) => {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: `${error.message}`,
+                        });
+                    });
+            }
+        });
+
+        return () => {
+            instance.interceptors.request.eject(requestInterceptor);
+            instance.interceptors.response.eject(responseInterceptor);
         }
-    });
+    }, [user, userSignOut, navigate]);
+
     return instance;
 };
 

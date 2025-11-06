@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link, NavLink } from "react-router";
 import AuthContext from "../../contexts/AuthContext.jsx";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
     const { user, userSignOut } = useContext(AuthContext);
@@ -23,7 +24,11 @@ const Navbar = () => {
                 console.log("User signed out");
             })
             .catch((error) => {
-                console.log(error.message);
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: `${error.message}`,
+                });
             })
     }
 

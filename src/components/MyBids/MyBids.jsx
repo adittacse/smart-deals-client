@@ -2,34 +2,29 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import Swal from "sweetalert2";
 import Loading from "../Loading/Loading.jsx";
+import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 
 const MyBids = () => {
     const [myBids, setMyBids] = useState([]);
     const [loading, setLoading] = useState(true);
     const { user } = useContext(AuthContext);
+    const axiosSecure = useAxiosSecure();
+
+    // using axios secure
+    useEffect(() => {
+        axiosSecure.get(`/my-bids?email=${user.email}`)
+            .then(data => {
+                setMyBids(data.data);
+                setLoading(false);
+            })
+    }, [axiosSecure, user?.email]);
 
     // for the jwt authorization
-    useEffect(() => {
-        if (user?.email) {
-            fetch(`http://localhost:3000/my-bids?email=${user.email}`, {
-                headers: {
-                    authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-            })
-                .then(res => res.json())
-                .then(data => {
-                    setMyBids(data);
-                    setLoading(false);
-                });
-        }
-    }, [user?.email]);
-
-    // for the firebase authorization
     // useEffect(() => {
     //     if (user?.email) {
     //         fetch(`http://localhost:3000/my-bids?email=${user.email}`, {
     //             headers: {
-    //                 authorization: `Bearer ${user.accessToken}`
+    //                 authorization: `Bearer ${localStorage.getItem("token")}`
     //             }
     //         })
     //             .then(res => res.json())
