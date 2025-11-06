@@ -6,7 +6,7 @@ import { Link } from "react-router";
 import useAxios from "../../hooks/useAxios.jsx";
 
 const CreateProduct = () => {
-    const [condition, setCondition] = useState("Brand New");
+    const [condition, setCondition] = useState("fresh");
     const { user } = useContext(AuthContext);
     const axiosInstance = useAxios();
 
@@ -126,12 +126,12 @@ const CreateProduct = () => {
                                     </label>
                                     <div className="flex items-center gap-12">
                                         <label className="label cursor-pointer gap-2">
-                                            <input type="radio" name="condition" value="Brand New" className="radio accent-[#632EE3]" checked={condition === "fresh"} onChange={() => setCondition("fresh")} />
+                                            <input type="radio" name="condition" value="fresh" className="radio accent-[#632EE3]" checked={condition === "fresh"} onChange={(e) => setCondition(e.target.value)} />
                                             <span className="label-text">Brand New</span>
                                         </label>
 
                                         <label className="label cursor-pointer gap-2">
-                                            <input type="radio" name="condition" value="Used" className="radio accent-gray-300" checked={condition === "used"} onChange={() => setCondition("used")} />
+                                            <input type="radio" name="condition" value="used" className="radio accent-gray-300" checked={condition === "used"} onChange={(e) => setCondition(e.target.value)} />
                                             <span className="label-text">Used</span>
                                         </label>
                                     </div>

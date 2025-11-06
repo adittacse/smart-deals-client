@@ -153,7 +153,7 @@ const EditProduct = () => {
                                         </label>
 
                                         <label className="label cursor-pointer gap-2">
-                                            <input type="radio" name="condition" value="Used" className="radio accent-gray-300" checked={condition === "used"} onChange={(e) => setCondition(e.target.value)} />
+                                            <input type="radio" name="condition" value="used" className="radio accent-gray-300" checked={condition === "used"} onChange={(e) => setCondition(e.target.value)} />
                                             <span className="label-text">Used</span>
                                         </label>
                                     </div>
