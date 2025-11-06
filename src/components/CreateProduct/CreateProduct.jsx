@@ -3,10 +3,12 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import Swal from "sweetalert2";
 import AuthContext from "../../contexts/AuthContext.jsx";
 import { Link } from "react-router";
+import useAxios from "../../hooks/useAxios.jsx";
 
 const CreateProduct = () => {
     const [condition, setCondition] = useState("Brand New");
     const { user } = useContext(AuthContext);
+    const axiosInstance = useAxios();
 
     const handleCreateProduct = (e) => {
         e.preventDefault();
@@ -44,20 +46,13 @@ const CreateProduct = () => {
             description
         };
 
-        fetch("http://localhost:3000/products", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newProduct)
-        })
-            .then((res) => res.json())
+        axiosInstance.post("/products", newProduct)
             .then((data) => {
-                if (data.insertedId) {
+                if (data.data.insertedId) {
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
-                        title: "Your product has been saved",
+                        title: "Your product has been created",
                         showConfirmButton: false,
                         timer: 1500
                     });
