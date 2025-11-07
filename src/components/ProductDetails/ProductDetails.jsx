@@ -15,7 +15,7 @@ const ProductDetails = () => {
 
     useEffect(() => {
         if (user) {
-            axios.get(`http://localhost:3000/products/bids/${productId}`, {
+            axios.get(`https://smart-deals-server-bvmm.onrender.com/products/bids/${productId}`, {
                 headers: {
                     authorization: `Bearer ${user.accessToken}`
                 }
@@ -28,7 +28,7 @@ const ProductDetails = () => {
     }, [productId, user]);
 
     // useEffect(() => {
-    //     fetch(`http://localhost:3000/products/bids/${productId}`, {
+    //     fetch(`https://smart-deals-server-bvmm.onrender.com/products/bids/${productId}`, {
     //         headers: {
     //             authorization: `Bearer ${user.accessToken}`
     //         }
@@ -69,7 +69,7 @@ const ProductDetails = () => {
             status: "pending"
         };
 
-        fetch("http://localhost:3000/bids", {
+        fetch("https://smart-deals-server-bvmm.onrender.com/bids", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

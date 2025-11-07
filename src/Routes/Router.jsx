@@ -34,7 +34,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: "product-details/:id",
-                loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`),
+                loader: ({ params }) => fetch(`https://smart-deals-server-bvmm.onrender.com/products/${params.id}`),
                 element: <ProductDetails />
             },
             {
@@ -51,7 +51,7 @@ const Router = createBrowserRouter([
             },
             {
                 path: "edit-product/:id",
-                loader: ({ params }) => fetch(`http://localhost:3000/products/${params.id}`),
+                loader: ({ params }) => fetch(`https://smart-deals-server-bvmm.onrender.com/products/${params.id}`),
                 element: <PrivateRoute><EditProduct /></PrivateRoute>
             }
         ]

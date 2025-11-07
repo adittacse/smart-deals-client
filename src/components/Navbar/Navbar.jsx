@@ -21,7 +21,13 @@ const Navbar = () => {
     const handleLogout = () => {
         userSignOut()
             .then(() => {
-                console.log("User signed out");
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Signed out",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             })
             .catch((error) => {
                 Swal.fire({

@@ -3,7 +3,7 @@ import { Link, useLoaderData } from "react-router";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import Swal from "sweetalert2";
 
-const categoriesPromise = fetch("http://localhost:3000/categories")
+const categoriesPromise = fetch("https://smart-deals-server-bvmm.onrender.com/categories")
     .then(res => res.json());
 
 const EditProduct = () => {
@@ -60,7 +60,7 @@ const EditProduct = () => {
             description
         };
 
-        fetch(`http://localhost:3000/products/${product._id}`, {
+        fetch(`https://smart-deals-server-bvmm.onrender.com/products/${product._id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

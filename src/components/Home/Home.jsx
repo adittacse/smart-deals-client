@@ -1,7 +1,7 @@
 import React from 'react';
 import LatestProducts from "../LatestProducts/LatestProducts.jsx";
 
-const latestProductsPromise = fetch("http://localhost:3000/latest-products").then((res) => res.json());
+const latestProductsPromise = fetch("https://smart-deals-server-bvmm.onrender.com/latest-products").then((res) => res.json());
 
 const Home = () => {
     return (

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import Swal from "sweetalert2";
 
 const instance = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://smart-deals-server-bvmm.onrender.com",
 });
 
 const useAxiosSecure = () => {
@@ -18,7 +18,10 @@ const useAxiosSecure = () => {
         const requestInterceptor = instance.interceptors.request.use((config) => {
             const token = user.accessToken;
             if (token) {
+                // firebase access token
                 config.headers.authorization = `Bearer ${user.accessToken}`;
+                // jwt access token
+                // config.headers.authorization = `Bearer ${localStorage.getItem("token")}`;
                 return config;
             }
         });

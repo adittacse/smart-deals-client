@@ -12,7 +12,7 @@ const MyProducts = () => {
 
     useEffect(() => {
         if (user?.email) {
-            fetch(`http://localhost:3000/products?email=${user.email}`, {
+            fetch(`https://smart-deals-server-bvmm.onrender.com/products?email=${user.email}`, {
                 headers: {
                     authorization: `Bearer ${localStorage.getItem("token")}`
                 }
@@ -41,7 +41,7 @@ const MyProducts = () => {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/products/${_id}`, {
+                fetch(`https://smart-deals-server-bvmm.onrender.com/products/${_id}`, {
                     method: "DELETE"
                 })
                     .then(res => res.json())
@@ -64,7 +64,7 @@ const MyProducts = () => {
     const handleMakeSold = (_id) => {
         const status = "sold";
 
-        fetch(`http://localhost:3000/products/${_id}`, {
+        fetch(`https://smart-deals-server-bvmm.onrender.com/products/${_id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
@@ -89,7 +89,7 @@ const MyProducts = () => {
     const handleMakePending = (_id) => {
         const status = "pending";
 
-        fetch(`http://localhost:3000/products/${_id}`, {
+        fetch(`https://smart-deals-server-bvmm.onrender.com/products/${_id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json"

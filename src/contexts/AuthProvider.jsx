@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser);
             if (currentUser) {
                 const loggedUser = { email: currentUser.email };
-                fetch("http://localhost:3000/get-token", {
+                fetch("https://smart-deals-server-bvmm.onrender.com/get-token", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
